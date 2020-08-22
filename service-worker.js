@@ -8,11 +8,14 @@ var urlsToCache = [
   "/pages/classement.html",
   "/pages/score.html",
   "/pages/detail.html",
+  "/pages/saved.html",
   "/css/materialize.min.css",
   "/css/style.css",
   "/js/materialize.min.js",
   "/js/nav.js",
   "/js/api.js",
+  "/js/db.js",
+  "/js/idb.js",
 ];
 
 self.addEventListener("install", function (event) {
