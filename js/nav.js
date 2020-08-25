@@ -51,6 +51,9 @@ document.addEventListener("DOMContentLoaded", function () {
         } else if (page === "saved") {
           console.log("masuk save");
           getSavedTeams();
+        } else if (page === "classement") {
+          console.log("masuk classement");
+          getClassement();
         }
         if (this.status == 200) {
           content.innerHTML = xhttp.responseText;

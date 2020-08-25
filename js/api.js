@@ -44,6 +44,7 @@ function getTeams() {
           let teamsHTML = "";
           let club = data.teams;
           club.slice(0, 6).forEach(function (team, index) {
+            team = JSON.parse(JSON.stringify(team).replace(/http:/g, "https:"));
             teamsHTML += `
                   <div  class="col s12 m6 l4">
                     <a href="../pages/detail.html?id=${team.id}">
@@ -74,6 +75,7 @@ function getTeams() {
       let teamsHTML = "";
       let club = data.teams;
       club.slice(0, 6).forEach(function (team, index) {
+        team = JSON.parse(JSON.stringify(team).replace(/http:/g, "https:"));
         teamsHTML += `
               <div  class="col s12 m6 l4">
                 <a href="../pages/detail.html?id=${team.id}">
@@ -264,4 +266,72 @@ function getSavedTeamById() {
 `;
     document.getElementById("team").innerHTML = teamHTML;
   });
+}
+
+function getClassement() {
+  fetchApi(base_url + "competitions/CL/standings?standingType=TOTAL")
+    .then(status)
+    .then(json)
+    .then(function (data) {
+      //objek/array dari response.json masuk lewat data yes
+      //susun komponen card secara dinamis
+      // let classementHTML = "";
+      let club = data.standings;
+      // let group = data.standings.group;
+      console.log(club);
+
+      let classementHTML = "";
+      let tableHTML = "";
+      let groupHTML = "";
+      let groupTableHTML = "";
+
+      club.forEach(function (team, index) {
+        let table = team.table;
+        console.log(team.group);
+        console.log(table);
+        let group = team.group;
+
+        groupHTML += `
+          <td>${team.group}</td>
+        `;
+
+        table.forEach(function (klasemen, index) {
+          console.log(klasemen.position);
+
+          classementHTML += `
+              <tr>
+                <td>${klasemen.position}</td>
+                <td>${klasemen.team.name}</td>
+                <td>${klasemen.playedGames}</td>
+                <td>${klasemen.won}</td>
+                <td>${klasemen.draw}</td>
+                <td>${klasemen.lost}</td>
+                <td>${klasemen.points}</td>
+                <td>${klasemen.goalsFor}</td>
+              </tr>
+        `;
+        });
+        groupTableHTML +=
+          `
+          <h4>${group}</h4>
+          <table>
+          <tr>
+            <th class="center-align">Position</th>
+            <th>Team</th>
+            <th class="center-align">Played</th>
+            <th class="center-align">Won</th>
+            <th class="center-align">Draw</th>
+            <th class="center-align">Lost</th>
+            <th class="center-align">GF</th>
+            <th class="center-align">GA</th>
+          </tr> ` +
+          classementHTML +
+          `
+          </table>
+        `;
+        document.getElementById("classement").innerHTML = groupTableHTML;
+        classementHTML = "";
+      });
+    })
+    .catch(error);
 }
