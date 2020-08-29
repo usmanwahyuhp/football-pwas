@@ -58,13 +58,16 @@
           <i class="large material-icons">save</i>
         </a>
       </div>
+      <div class="fixed-action-btn">
+        <a class="btn-floating btn-large" id="delete">
+          <i class="large material-icons">delete</i>
+        </a>
+      </div>
     </main>
 
     <footer>
       <div class="footer-copyright">
-        <div class="center grey darken-1 text">
-          © 2020 Submission PWA's
-        </div>
+        <div class="center grey darken-1 text">© 2020 Submission PWA's</div>
       </div>
     </footer>
 
@@ -109,18 +112,31 @@
 
         ///last//
         var urlParams = new URLSearchParams(window.location.search);
+        var idParam = urlParams.get("id");
         var isFromSaved = urlParams.get("saved");
         console.log("isFromSaved");
         console.log(isFromSaved);
+        let save = document.getElementById("save");
+        let hapus = document.getElementById("delete");
         // let savedo = false;
         if (isFromSaved) {
           console.log("isfromsaved");
-          getSavedTeamById();
+          save.style.display = "none";
+
+          let deleteItem = getSavedTeamById();
+
+          hapus.onclick = function () {
+            console.log("tombol DELETE di Klik!");
+            deleteItem.then(function (idParam) {
+              deleteByid(idParam);
+            });
+          };
         } else if (isFromSaved == null) {
           console.log("getTeamsByid");
+          hapus.style.display = "none";
+
           let item = getTeamByid();
 
-          let save = document.getElementById("save");
           save.onclick = function () {
             console.log("tombol FAB di klik!");
             item.then(function (team) {
